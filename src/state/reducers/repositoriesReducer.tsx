@@ -4,16 +4,40 @@ interface RepositoriesState {
   data: string[];
 }
 
-interface Action {
-  type: string;
-  payload?: any;
+// instead of having 1 interface for all actions
+// have 1 interface for every individuals action
+// interface Action {
+//   type: string;
+//   payload?: any;
+// }
+
+// action interfaces
+// helps with type guard
+// if the action recieved is one of these types
+// then we know for 100 percent certainty that it will have the coressponding values
+interface SearchRepositoriesAction {
+  type: "search_repositories";
+}
+
+interface SearchRepositoriesSuccessAction {
+  type: "search_repositories_success";
+  payload: string[];
+}
+
+interface SearchRepositoriesErrorAction {
+  type: "search_repositories_error";
+  payload: string;
 }
 
 // we are also going to return from our reducer something of type repositoreis state
 const reducer = (
   state: RepositoriesState,
-  action: Action
+  action:
+    | SearchRepositoriesAction
+    | SearchRepositoriesSuccessAction
+    | SearchRepositoriesErrorAction
 ): RepositoriesState => {
+  // switch statment counts a type guards as well
   switch (action.type) {
     // this first case means we just started a new search request
     case "search_repositories":
